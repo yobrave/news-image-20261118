@@ -12,22 +12,46 @@ grader runs to collect the image.
 
 ## The image
 
-`entry.png` is laid out like a classic broadsheet front page on a
-cream background with bold black serif headlines and red accents:
+`entry.png` is laid out like a classic broadsheet front page on a cream
+background — masthead, three illustrated lead stories, numbered regional
+briefs, a "Where It Happened" world map, and an "Also on Wednesday"
+strip:
 
-- **Masthead** — kicker line "ONE PAGE · EVERY TIME ZONE · WEDNESDAY",
-  the title **THE DAY IN BRIEF**, and the subtitle
-  "WORLD NEWS — 18 NOVEMBER 2026".
-- **Six story cards** in a 2×3 grid, each with a red accent bar and icon:
-  - *China · APEC Summit* — "Trump and Putin set for summit with Xi"
-  - *Iran · Gulf Escalation* — "Iran widens Gulf strikes to Kuwait and Bahrain"
-  - *Tech · Nvidia* — "Nvidia beats on earnings, but Huang will not return"
-  - *United States · Midterms* — "Peltola flips Alaska Senate seat"
-  - *Ukraine · War* — "Zelenskyy protests Starshield curbs"
-  - *Climate · COP31* — "COP31 enters decisive week over money"
-- **Footer bar** — "ALSO TODAY" one-liners: Haiti rallies behind Bukele as
-  Salvadoran troops battle gangs · Ebola doubles in DR Congo · US loses
-  measles-free status · Japan exports surge 20.5%.
+- **Masthead** — kicker row "THE DAY IN BRIEF · LATE EDITION" /
+  "40 STORIES · 6 CONTINENTS · ALL FROM WEDNESDAY", then the date line
+  **WEDNESDAY 18 NOVEMBER 2026** as the page's largest element.
+- **Three illustrated heroes** (01–03), each in a framed panel with
+  deterministic vector art: the APEC summit flags table (Trump–Putin–Xi
+  in Shenzhen), a schematic Gulf theatre map with strike markers (Iran
+  attacks Kuwait and Bahrain), and the Nvidia chip with rising futures
+  bars.
+- **Six regional sections** (04–34) — Americas, Europe & Russia, Middle
+  East, Asia, Africa, Oceania — every brief numbered and color-coded by
+  continent (red / blue / orange / purple / green / teal).
+- **Where It Happened** — an equirectangular world map with numbered
+  pins (colored by continent) marking the lead story for 17 locations.
+- **Also on Wednesday** (35–40) — six one-line briefs (Bond casting,
+  Anthropic's crypto bet, college playoff, Rickelton's century, the
+  withdrawn FDA nominee, "Dancing With The Stars").
+- **Attribution rail** — source credits (AP · BBC · FT · WSJ · Guardian ·
+  Reuters · Al Jazeera · Bloomberg · NYT · CBS · ESPN) and a method line:
+  every item was first reported or followed up on Wednesday, claims
+  attributed to source.
+
+Every fact on the page is documented with publisher and timestamp in
+[`notes.md`](notes.md).
+
+## How the image is built
+
+`render.py` draws the entire page deterministically with Pillow vector
+primitives and system fonts (no randomness, no network): run it twice and
+the PNG bytes are identical, which satisfies the bounty's double-run
+byte-consistency requirement. The graded program is still `main.py`; the
+repository ships the pre-rendered `entry.png` it copies.
+
+```sh
+python render.py   # rebuilds entry.png (requires Pillow)
+```
 
 ## How the grader runs it
 
@@ -56,9 +80,9 @@ sha256sum entry.png out/entry.png
 ```
 
 Both digests must match —
-`6965d58da5029fc09d1aedc07699d450bbf94f3280dd240ee917e30454556920` for
-the current `entry.png` (129,804 bytes). Requires Python 3.6+; no
-third-party dependencies.
+`64fefbadb5fd09b95f0eccb3103918f9577ce2bb50aab202296b023b8d44d710` for
+the current `entry.png` (192,914 bytes). Requires Python 3.6+; no
+third-party dependencies for the graded run.
 
 ## Repository layout
 
@@ -66,6 +90,8 @@ third-party dependencies.
 | ------------ | ---------------------------------------------------- |
 | `entry.png`  | The contest image (1024×1024 PNG).                   |
 | `main.py`    | Entry program; copies `entry.png` to the output dir. |
+| `render.py`  | Deterministic Pillow renderer that builds `entry.png`. |
+| `notes.md`   | Fact base: all 40 stories with publisher + timestamp. |
 | `LICENSE`    | MIT License.                                         |
 
 ---
